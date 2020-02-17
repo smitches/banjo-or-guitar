@@ -10,9 +10,8 @@ RUN pip install fastai
 # Install starlette and uvicorn
 RUN pip install starlette uvicorn python-multipart aiohttp
 
-ADD guitar.py guitar.py
-
 ADD export.pkl export.pkl
+ADD guitar.py guitar.py
 
 # Run it once to trigger resnet download
 RUN python guitar.py
