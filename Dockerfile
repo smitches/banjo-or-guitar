@@ -11,8 +11,8 @@ RUN pip install fastai
 RUN pip install starlette uvicorn python-multipart aiohttp
 
 ADD guitar.py guitar.py
-RUN wget https://smitches-banjo.s3.us-east-2.amazonaws.com/banjo-or-guitar.pth
-# ADD banjo-or-guitar.pth banjo-or-guitar.pth
+
+ADD export.pkl export.pkl
 
 # Run it once to trigger resnet download
 RUN python guitar.py
