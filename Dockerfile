@@ -10,13 +10,15 @@ RUN pip install fastai
 # Install starlette and uvicorn
 RUN pip install starlette uvicorn python-multipart aiohttp
 
-ADD cougar.py cougar.py
-ADD usa-inaturalist-cats.pth usa-inaturalist-cats.pth
+ADD guitar.py guitar.py
+RUN wget https://smitches-banjo.s3.us-east-2.amazonaws.com/banjo-or-guitar.pth
+# ADD banjo-or-guitar.pth banjo-or-guitar.pth
 
 # Run it once to trigger resnet download
-RUN python cougar.py
+RUN python guitar.py
+
 
 EXPOSE 8008
 
 # Start the server
-CMD ["python", "cougar.py", "serve"]
+CMD ["python", "guitar.py", "serve"]
