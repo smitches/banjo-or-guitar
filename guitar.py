@@ -2,10 +2,11 @@ from starlette.applications import Starlette
 from starlette.responses import JSONResponse, HTMLResponse, RedirectResponse
 from fastai.vision import (
     ImageDataBunch,
-    ConvLearner,
+    # ConvLearner,
     open_image,
     get_transforms,
     models,
+    load_learner
 )
 import torch
 from pathlib import Path
@@ -24,27 +25,28 @@ async def get_bytes(url):
 
 app = Starlette()
 
-instrument_images_path = Path("/tmp")
-instrument_fnames = [
-    "/{}_1.jpg".format(c)
-    for c in [
-        "banjo",
-        "acoustic",
-        "electric",
-    ]
-]
-instrument_data = ImageDataBunch.from_name_re(
-    instrument,
-    instrument_fnames,
-    r"/([^/]+)_\d+.jpg$",
-    ds_tfms=get_transforms(),
-    size=224,
-)
-instrument_learner = ConvLearner(instrument_data, models.resnet34)
-instrument_learner.model.load_state_dict(
-    torch.load("banjo-or-guitar.pth", map_location="cpu")
-)
+# instrument_images_path = Path("/tmp")
+# instrument_fnames = [
+#     "/{}_1.jpg".format(c)
+#     for c in [
+#         "banjo",
+#         "acoustic",
+#         "electric",
+#     ]
+# ]
+# instrument_data = ImageDataBunch.from_name_re(
+#     instrument,
+#     instrument_fnames,
+#     r"/([^/]+)_\d+.jpg$",
+#     ds_tfms=get_transforms(),
+#     size=224,
+# )
+# instrument_learner = ConvLearner(instrument_data, models.resnet34)
+# instrument_learner.model.load_state_dict(
+#     torch.load("banjo-or-guitar.pth", map_location="cpu")
+# )
 
+instrument_learner = load_learner("export.pkl")
 
 @app.route("/upload", methods=["POST"])
 async def upload(request):
