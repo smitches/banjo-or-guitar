@@ -11,8 +11,6 @@ phases:
       - apt-get update -y
       - apt-get remove docker docker-engine docker.io
       - apt install docker.io -y
-      - systemctl start docker -y
-      - systemctl enable docker -y
     finally:
       - echo This always runs even if the update or install command fails 
   pre_build:
