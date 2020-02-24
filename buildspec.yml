@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  variables:
+    USERNAME: "smitches"
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - apt-get update -y
+      - apt-get remove docker docker-engine docker.io
+      - apt install docker.io -y
+      - systemctl start docker -y
+      - systemctl enable docker -y
+    finally:
+      - echo This always runs even if the update or install command fails 
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+    finally:
+      - echo This always runs just before build. do login here 
+  build:
+    commands:
+      - echo Entered the build phase...
+      - echo Build started on `date`
+      - docker build -t banjo-model
+      - docker run -d -p8008:8008 banjo-model
+    finally:
+      - docker images
+      - docker ps
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
