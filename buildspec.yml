@@ -17,7 +17,7 @@ phases:
       - echo This always runs just before build. do login here 
   build:
     commands:
-      - python guitar.py
+      - python application.py
     finally:
       - pwd
   post_build:
