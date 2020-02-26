@@ -1,32 +1,25 @@
 version: 0.2
 
-env:
-  variables:
-    USERNAME: "smitches"
-
 phases:
   install:
-    commands:
-      - echo Entered the install phase...
-      - apt-get update -y
-      - apt-get remove docker docker-engine docker.io
-      - apt install docker.io -y
-    finally:
-      - echo This always runs even if the update or install command fails 
+    runtime-versions:
+      python: 3.7
+      
   pre_build:
     commands:
       - echo Entered the pre_build phase...
+      - apt update
+      - apt install -y python3-dev gcc
+      - pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+      - pip install fastai
+      - pip install starlette uvicorn python-multipart aiohttp
     finally:
       - echo This always runs just before build. do login here 
   build:
     commands:
-      - echo Entered the build phase...
-      - echo Build started on `date`
-      - docker build -t banjo-model
-      - docker run -d -p8008:8008 banjo-model
+      - python guitar.py
     finally:
-      - docker images
-      - docker ps
+      - python guitar.py serve
   post_build:
     commands:
       - echo Entered the post_build phase...
