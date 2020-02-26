@@ -19,8 +19,13 @@ phases:
     commands:
       - python guitar.py
     finally:
-      - python guitar.py serve
+      - pwd
   post_build:
     commands:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
+artifacts:
+  files:
+    - 'application.py'
+    - 'export.pkl'
+  base-directory: ''
